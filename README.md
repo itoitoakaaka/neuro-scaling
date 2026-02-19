@@ -1,8 +1,29 @@
 # neuro-scaling
 
-大規模脳データ（EEG / MEG / ECoG）を用いて スケーリング則の解析 と 深層学習による神経デコーディング を行うリポジトリ
+Neural scaling laws analysis and deep learning-based neural decoding using large-scale brain data (EEG / MEG / ECoG).
 
-## セットアップ
+## Overview
+
+This repository investigates how model performance scales with data size in neural decoding tasks — a phenomenon known as "neural scaling laws." It provides tools to load EEG data, extract features, compute scaling curves, and train CNN-based decoders using PyTorch.
+
+## Features
+
+- **Data Loading** (`data_loader.py`): Load and preprocess EEG data from the PhysioNet Motor Imagery dataset via MNE-Python.
+- **Scaling Analysis** (`scaling_analysis.py`): Compute accuracy vs. data size curves and fit power-law models (y = a·x^b + c).
+- **Neural Decoder** (`decoder.py`): Convolutional neural network for EEG classification (motor imagery left/right hand).
+- **CLI Interface** (`main.py`): Simple command-line interface for download, scaling analysis, and decoding.
+
+## Requirements
+
+- Python 3.8+
+- MNE-Python
+- NumPy
+- SciPy
+- scikit-learn
+- Matplotlib
+- PyTorch
+
+## Setup
 
 ```bash
 python3 -m venv .venv
@@ -10,27 +31,22 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 使い方
+## Usage
 
 ```bash
-# データのダウンロード
-python main.py download --dataset eeg_motor
+# Download sample EEG data
+python main.py download
 
-# スケーリング則の解析
-python main.py scaling --data_dir data/
+# Run scaling law analysis (uses subjects 1-5)
+python main.py scaling
 
-# デコーディングモデルの学習
-python main.py decode --data_dir data/ --epochs 50
+# Train a neural decoder
+python main.py decode
+
+# Run the full pipeline
+python main.py all
 ```
 
-## プロジェクト構成
+## Output
 
-```
-neuro-scaling/
-├── main.py                # エントリーポイント
-├── scaling_analysis.py    # スケーリング則の解析
-├── decoder.py             # 深層学習デコーダ
-├── data_loader.py         # データ読み込み・前処理
-├── requirements.txt       # 依存ライブラリ
-└── README.md
-```
+- `scaling_curve.png`: Plot of classification accuracy vs. data fraction with power-law fit.
